@@ -1,0 +1,9 @@
+{{ form_start(form) }}
+<div class="row">
+    <div class="col-md-4">{{ form_row(form.name) }}</div>
+    <div class="col-md-4">{{ form_row(form.prename) }}</div>
+    <div class="col-md-4">{{ form_row(form.birthdate) }}</div>
+</div>
+    {{ form_widget(form) }}
+    <button class="btn btn-primary">{{ button_label|default('Valider') }}</button>
+{{ form_end(form) }}

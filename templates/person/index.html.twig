@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Person index{% endblock %}
+
+{% block body %}
+    <h1>Person index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Prename</th>
+                <th>Birthdate</th>
+                <th>Age</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for person in people %}
+            <tr>
+                <td>{{ person.id }}</td>
+                <td>{{ person.name }}</td>
+                <td>{{ person.prename }}</td>
+                <td>{{ person.birthdate ? person.birthdate|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ person.birthdate|age }}</td>
+                <td>
+                    <a href="{{ path('person_show', {'id': person.id}) }}">show</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('person_new') }}">Create new</a>
+{% endblock %}
