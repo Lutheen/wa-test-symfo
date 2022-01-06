@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\PersonRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Validator as AppAssert;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=PersonRepository::class)
@@ -29,6 +31,8 @@ class Person
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\NotBlank()
+     * @AppAssert\AgeConstraint()
      */
     private $birthdate;
 

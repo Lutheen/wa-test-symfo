@@ -1,9 +1,14 @@
 {{ form_start(form) }}
-<div class="row">
-    <div class="col-md-4">{{ form_row(form.name) }}</div>
-    <div class="col-md-4">{{ form_row(form.prename) }}</div>
-    <div class="col-md-4">{{ form_row(form.birthdate) }}</div>
+<div class="container">
+    <div class="row align-items-center pb-4">
+        <div class="col">{{ form_row(form.name) }}</div>
+        <div class="col">{{ form_row(form.prename) }}</div>
+        <div class="col">{{ form_row(form.birthdate) }}</div>
+    </div>
 </div>
     {{ form_widget(form) }}
-    <button class="btn btn-primary">{{ button_label|default('Valider') }}</button>
+    <div class="d-grid gap-2 col-1 mx-auto">
+        <button class="btn btn-primary">{{ button_label|default('Valider') }}</button>
+    </div>
+
 {{ form_end(form) }}

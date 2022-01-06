@@ -3,9 +3,14 @@
 {% block title %}New Person{% endblock %}
 
 {% block body %}
-    <h1>Create new Person</h1>
+    <div class="container-fluid">
+        <h1 class="pt-2 pb-4">Ajouter une nouvelle personne</h1>
 
-    {{ include('person/_form.html.twig') }}
+        {{ include('person/_form.html.twig') }}
 
-    <a href="{{ path('person_index') }}">back to list</a>
+        <div class="d-grid gap-2 col-1 mx-auto">
+            <a href="{{ path('person_index') }}" class="btn btn-secondary">Back to list</a>
+        </div>
+
+    </div>
 {% endblock %}
