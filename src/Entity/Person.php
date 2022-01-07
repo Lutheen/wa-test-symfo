@@ -76,4 +76,18 @@ class Person
 
         return $this;
     }
+
+    /**
+     * @return int|null
+     */
+    public function getAge(): ?int
+    {
+        if ($this->birthdate instanceof \DateTime) {
+            $referenceDateTime = new \DateTime("now");
+
+            return $referenceDateTime->diff($this->birthdate, true)->y;
+        }
+
+        return null;
+    }
 }
