@@ -22,7 +22,7 @@
                 <td>{{ person.name }}</td>
                 <td>{{ person.prename }}</td>
                 <td>{{ person.birthdate ? person.birthdate|date('Y-m-d') : '' }}</td>
-                <td>{{ person.getAge() }}</td>
+                <td>{{ person.age }}</td>
             </tr>
         {% else %}
             <tr>
