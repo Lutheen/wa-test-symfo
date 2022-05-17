@@ -46,4 +46,10 @@ class PersonController extends AbstractController
             'form' => $form,
         ]);
     }
+
+    #[Route('/person/import', name: 'person_import', methods: ['GET', 'POST'])]
+    public function import()
+    {
+        return $this->render('person/import.html.twig');
+    }
 }
