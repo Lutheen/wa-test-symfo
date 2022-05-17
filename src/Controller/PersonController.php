@@ -11,10 +11,15 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/person')]
 class PersonController extends AbstractController
 {
-    #[Route('/', name: 'person_index', methods: ['GET'])]
+    #[Route('/', name: 'index')]
+    public function home()
+    {
+        return $this->render('index.html.twig');
+    }
+
+    #[Route('/person', name: 'person_index', methods: ['GET'])]
     public function index(PersonRepository $personRepository): Response
     {
         return $this->render('person/index.html.twig', [
@@ -22,7 +27,7 @@ class PersonController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'person_new', methods: ['GET', 'POST'])]
+    #[Route('/person/new', name: 'person_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $person = new Person();
