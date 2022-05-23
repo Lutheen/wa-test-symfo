@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Person;
+use App\Form\ImportType;
 use App\Form\PersonType;
 use App\Repository\PersonRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -48,8 +49,27 @@ class PersonController extends AbstractController
     }
 
     #[Route('/person/import', name: 'person_import', methods: ['GET', 'POST'])]
-    public function import()
+    public function import(Request $request): Response
     {
-        return $this->render('person/import.html.twig');
+        $form = $this->createForm(ImportType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Récupération du fichier transmis
+            $upload = $form['attachment']->getData();
+            // Nouveau nom de fichier
+            $file = md5(uniqid()) . '.' . $upload->guessExtension();
+            // Copie dans le dossier upload
+            $upload->move(
+                $this->getParameter('attachment_directory'),
+                $file
+            );
+
+            // TODO lire le fichier transmis pour l'intégrer à la BDD
+
+        }
+        return $this->renderForm('person/import.html.twig', [
+            'form' => $form,
+        ]);
     }
 }
