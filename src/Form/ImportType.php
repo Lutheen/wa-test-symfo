@@ -17,7 +17,6 @@ class ImportType extends AbstractType
             ->add('attachment', FileType::class, [
                 'label' => false,
             ])
-            ->add('name', TextType::class)
             ->add('valider', SubmitType::class)
         ;
     }

@@ -7,6 +7,7 @@ use App\Form\ImportType;
 use App\Form\PersonType;
 use App\Repository\PersonRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use SplFileObject;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -58,16 +59,33 @@ class PersonController extends AbstractController
             // Récupération du fichier transmis
             $upload = $form['attachment']->getData();
             // Nouveau nom de fichier
-            $file = md5(uniqid()) . '.' . $upload->guessExtension();
+            $file = sprintf('%s.%s', uniqid(), $upload->guessExtension());
             // Copie dans le dossier upload
             $upload->move(
                 $this->getParameter('attachment_directory'),
                 $file
             );
-
-            // TODO lire le fichier transmis pour l'intégrer à la BDD
-
+            // lecture du fichier
+            $fileRead = new SplFileObject(sprintf('%s%s%s', $this->getParameter('attachment_directory'), \DIRECTORY_SEPARATOR, $file));
+            $fileRead->setFlags(
+                SplFileObject::READ_CSV |
+                SplFileObject::SKIP_EMPTY |
+                SplFileObject::DROP_NEW_LINE |
+                SplFileObject::READ_AHEAD
+            );
+            $i = 0;
+            while (false == $fileRead->eof()) {
+                ++$i;
+                if ($i <= 1) {
+                    $fileArrayKey = $fileRead->fgetcsv();
+                }
+                if ($i >= 2) {
+                    $fileArrayValue = $fileRead->fgetcsv();
+                    dump(array_combine($fileArrayKey, $fileArrayValue));
+                }
+            }
         }
+
         return $this->renderForm('person/import.html.twig', [
             'form' => $form,
         ]);
