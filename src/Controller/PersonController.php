@@ -6,6 +6,7 @@ use App\Entity\Person;
 use App\Form\ImportType;
 use App\Form\PersonType;
 use App\Repository\PersonRepository;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use SplFileObject;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -50,7 +51,7 @@ class PersonController extends AbstractController
     }
 
     #[Route('/person/import', name: 'person_import', methods: ['GET', 'POST'])]
-    public function import(Request $request): Response
+    public function import(Request $request, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(ImportType::class);
         $form->handleRequest($request);
@@ -81,9 +82,17 @@ class PersonController extends AbstractController
                 }
                 if ($i >= 2) {
                     $fileArrayValue = $fileRead->fgetcsv();
-                    dump(array_combine($fileArrayKey, $fileArrayValue));
+                    $personData = array_combine($fileArrayKey, $fileArrayValue);
+                    $person = new Person();
+                    $person->setName($personData['name']);
+                    $person->setPrename($personData['prename']);
+                    $person->setBirthdate(DateTime::createFromFormat('d/m/Y', $personData['birthdate']));
+                    $entityManager->persist($person);
                 }
             }
+            $entityManager->flush();
+
+            return $this->redirectToRoute('person_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('person/import.html.twig', [
